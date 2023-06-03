@@ -183,7 +183,7 @@ public class AStarShipTrajectoryPlanning {
     public List<Coordinate> getPath(){
         PriorityPoint start = new PriorityPoint(0, start_point);
         open_set.add(start);
-        window=new Window("p1");
+        window=new Window("寻路中");
         while (!open_set.isEmpty()){
             PriorityPoint poll = open_set.poll();
 

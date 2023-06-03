@@ -15,6 +15,7 @@ public class Main {
      * start_point：起始点
      * start_velocity： 起始速度
      * end_point： 结束点
+     * diff: 寻路步长
      */
     public static void main(String[] args) {
         double engine_power=212000;
@@ -36,7 +37,7 @@ public class Main {
                 end_point.getX(),end_point.getY(),
                 ship,50);
         List<Coordinate> path = aStarShipTrajectoryPlanning.getPath();
-        Window window=new Window("p2");
+        Window window=new Window("最终路线");
         for (Coordinate coordinate:path){
             window.drawPoint(coordinate.getX(), coordinate.getY());
             System.out.println("X: "+coordinate.getX()+", Y: "+coordinate.getY());
