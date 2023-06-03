@@ -37,10 +37,11 @@ public class Main {
                 end_point.getX(),end_point.getY(),
                 ship,50);
         List<Coordinate> path = aStarShipTrajectoryPlanning.getPath();
-        Window window=new Window("最终路线");
+        Window window=new Window("Final path");
         for (Coordinate coordinate:path){
             window.drawPoint(coordinate.getX(), coordinate.getY());
             System.out.println("X: "+coordinate.getX()+", Y: "+coordinate.getY());
+            System.out.println("/\\");
         }
     }
 }

@@ -19,7 +19,7 @@ class Window extends ApplicationFrame {
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series);
 
-        JFreeChart chart = ChartFactory.createScatterPlot("Point Plot", "X", "Y",
+        JFreeChart chart = ChartFactory.createScatterPlot(title, "X", "Y",
                                                           dataset, PlotOrientation.VERTICAL, true, false, false);
 
         ChartPanel chartPanel = new ChartPanel(chart);
