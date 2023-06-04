@@ -32,7 +32,7 @@ public class Main {
         Coordinate end_point=new Coordinate(0,0);
 
         for (int i=0;i<10000;i+=500){
-            AStarShipTrajectoryPlanning.Circle circle = new AStarShipTrajectoryPlanning.Circle(
+            Circle circle = new Circle(
                     new Coordinate(0, 0), 500+i);
             for (Coordinate c:circle.getCoordinates()){
                 end_point=c;

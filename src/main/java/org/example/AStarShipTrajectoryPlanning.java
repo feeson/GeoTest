@@ -12,10 +12,10 @@ public class AStarShipTrajectoryPlanning {
     Coordinate indexVct;
     Ship ship;
     public AStarShipTrajectoryPlanning(double sx,double sy,double svx,double svy,double ex,double ey,Ship ship,double diff){
-        start_point= new MyCoordinate(Math.floor(sx),Math.floor(sy));
+        start_point= new MyCoordinate(this, Math.floor(sx), Math.floor(sy));
         start_point.setParent_point(start_point);
         start_point.setCost_distance(0);
-        end_point= new MyCoordinate(Math.floor(ex),Math.floor(ey));
+        end_point= new MyCoordinate(this, Math.floor(ex), Math.floor(ey));
         estimate_distance=start_point.distance(end_point);
         vs=new Coordinate(svx,svy);
         start_point.setV(vs);
@@ -34,127 +34,7 @@ public class AStarShipTrajectoryPlanning {
         coordinate.setX(x/distance);
         coordinate.setY(y/distance);
     }
-    class MyCoordinate extends Coordinate{
-        public Coordinate getV() {
-            return v;
-        }
 
-        public void setV(Coordinate v) {
-            this.v = v;
-        }
-
-        private MyCoordinate parent_point;
-        private double cost_distance;
-        private Coordinate v;
-
-        public double getCost_distance() {
-            return cost_distance;
-        }
-
-        public void setCost_distance(double cost_distance) {
-            this.cost_distance = cost_distance;
-        }
-
-        public MyCoordinate(double x, double y) {
-            super(x,y);
-        }
-
-        public MyCoordinate getParent_point() {
-            return parent_point;
-        }
-
-        public void setParent_point(
-                MyCoordinate parent_point) {
-            this.parent_point = parent_point;
-        }
-
-        @Override
-        public boolean equals(Object other) {
-            if (this == other) return true;
-            if (other == null || getClass() != other.getClass()) return false;
-
-            MyCoordinate that = (MyCoordinate) other;
-            // 自定义的坐标比较逻辑
-            double tolerance = diff-1;  // 允许的误差范围
-            return this.distance(that)<tolerance;
-        }
-    }
-    class PriorityPoint {
-        private double priority;
-        private MyCoordinate point;
-
-        public boolean equal(MyCoordinate end){
-            return end.equals(this.point);
-        }
-
-        public PriorityPoint(double priority, MyCoordinate point) {
-            this.priority = priority;
-            this.point = point;
-        }
-
-        public double getPriority() {
-            return priority;
-        }
-
-        public void setPriority(double priority) {
-            this.priority = priority;
-        }
-
-        public MyCoordinate getPoint() {
-            return point;
-        }
-
-        public void setPoint(MyCoordinate point) {
-            this.point = point;
-        }
-    }
-    public static class Circle extends Polygon {
-        private final double radius;
-        private final Coordinate center;
-
-        public Circle(Coordinate center, double radius) {
-            super(createCircleGeometry(center, radius), null, new GeometryFactory());
-            this.center = center;
-            this.radius = radius;
-        }
-
-        public double getRadius() {
-            return radius;
-        }
-
-        public Coordinate getCenter() {
-            return center;
-        }
-
-        private static LinearRing createCircleGeometry(Coordinate center, double radius) {
-            GeometryFactory geometryFactory = new GeometryFactory();
-            Coordinate[] coordinates = createCircleCoordinates(center, radius);
-            try {
-                return geometryFactory.createLinearRing(coordinates);
-            }catch (Exception e){
-                return null;
-            }
-        }
-
-        private static Coordinate[] createCircleCoordinates(Coordinate center, double radius) {
-            int sides = 20; // 圆形的边数
-            double angleIncrement = (2 * Math.PI) / sides;
-            Coordinate[] coordinates = new Coordinate[sides + 1];
-
-            for (int i = 0; i < sides; i++) {
-                double angle = i * angleIncrement;
-                double x = center.x + radius * Math.cos(angle);
-                double y = center.y + radius * Math.sin(angle);
-                coordinates[i] = new Coordinate(x, y);
-            }
-
-            // 将第一个坐标点重复一次作为最后一个坐标点，以确保线性环闭合
-            coordinates[sides] = coordinates[0];
-
-            return coordinates;
-        }
-
-    }
     public  class MyCoordinateSet extends HashSet<MyCoordinate>{
         @Override
         public boolean contains(Object obj) {
@@ -177,22 +57,19 @@ public class AStarShipTrajectoryPlanning {
             Comparator.comparingDouble(PriorityPoint::getPriority));
     MyCoordinateSet close_set=new MyCoordinateSet();
     double diff;
-    Window window;
+
     public List<Coordinate> getPath(){
         PriorityPoint start = new PriorityPoint(0, start_point);
         open_set.add(start);
-        window=new Window("Routing");
         while (!open_set.isEmpty()){
             PriorityPoint poll = open_set.poll();
-
-//            window.drawPoint(poll.getPoint().getX(), poll.getPoint().getY());
 
             if (poll.equal(end_point)){
                 List<Coordinate> path=new ArrayList<>();
                 MyCoordinate cur=poll.getPoint();
-                while (cur.parent_point!=start_point){
+                while (cur.getParent_point()!=start_point){
                     path.add(cur);
-                    cur=cur.parent_point;
+                    cur=cur.getParent_point();
                 }
                 return path;
             }else {
@@ -285,7 +162,7 @@ public class AStarShipTrajectoryPlanning {
             double x = v.getX() * (c.getX() - coordinate.getX()) + v.getY() * (c.getY() - coordinate.getY());
             double distance=c.distance(coordinate);
             if (x>0&&Math.abs(diff-distance)<2){
-                MyCoordinate myCoordinate = new MyCoordinate(c.getX(),
+                MyCoordinate myCoordinate = new MyCoordinate(this, c.getX(),
                                                              c.getY());
                 myCoordinate.setParent_point(coordinate);
                 myCoordinate.setV(getVCoordinate(next_speed,coordinate,c));
