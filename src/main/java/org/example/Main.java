@@ -28,7 +28,7 @@ public class Main {
         ship.setPowerYaw(power_of_yaw);
         Coordinate start_point=new Coordinate(0, 0);
         Coordinate start_velocity=new Coordinate(0,15);
-        Coordinate end_point=new Coordinate(618.0339887498944,-1902.1130325903073);
+        Coordinate end_point=new Coordinate(0,0);
 
         for (int i=0;i<10000;i+=500){
             AStarShipTrajectoryPlanning.Circle circle = new AStarShipTrajectoryPlanning.Circle(
