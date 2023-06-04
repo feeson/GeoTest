@@ -26,22 +26,34 @@ public class Main {
         ship.setEnginePower(engine_power);
         ship.setMass(mass);
         ship.setPowerYaw(power_of_yaw);
-
         Coordinate start_point=new Coordinate(0, 0);
-        Coordinate start_velocity=new Coordinate(0,0.5);
-        Coordinate end_point=new Coordinate(10,-1800);
+        Coordinate start_velocity=new Coordinate(0,15);
+        Coordinate end_point=new Coordinate(618.0339887498944,-1902.1130325903073);
 
-        AStarShipTrajectoryPlanning aStarShipTrajectoryPlanning = new AStarShipTrajectoryPlanning(
-                start_point.getX(), start_point.getY(),
-                start_velocity.getX(),start_velocity.getY(),
-                end_point.getX(),end_point.getY(),
-                ship,50);
-        List<Coordinate> path = aStarShipTrajectoryPlanning.getPath();
-        Window window=new Window("Final path");
-        for (Coordinate coordinate:path){
-            window.drawPoint(coordinate.getX(), coordinate.getY());
-            System.out.println("X: "+coordinate.getX()+", Y: "+coordinate.getY());
-            System.out.println("/\\");
+        for (int i=0;i<10000;i+=500){
+            AStarShipTrajectoryPlanning.Circle circle = new AStarShipTrajectoryPlanning.Circle(
+                    new Coordinate(0, 0), 500+i);
+            for (Coordinate c:circle.getCoordinates()){
+                end_point=c;
+                System.out.println(
+                        "radius: "+PhysicUtil.getGyrationRadius(start_velocity.distance(new Coordinate(0,0)),ship.getPowerYaw())
+                                +" distance: "+start_point.distance(end_point)
+                                +" X: "+end_point.getX()+" Y: "+end_point.getY());
+                long start=System.currentTimeMillis();
+                AStarShipTrajectoryPlanning aStarShipTrajectoryPlanning = new AStarShipTrajectoryPlanning(
+                        start_point.getX(), start_point.getY(),
+                        start_velocity.getX(),start_velocity.getY(),
+                        end_point.getX(),end_point.getY(),
+                        ship,Math.min(start_point.distance(end_point)/30,150));
+                List<Coordinate> path = aStarShipTrajectoryPlanning.getPath();
+                System.out.println("Spend time: "+(System.currentTimeMillis()-start)+" ms");
+                Window window=new Window("Final path");
+                for (Coordinate coordinate:path){
+                    window.drawPoint(coordinate.getX(), coordinate.getY());
+                }
+            }
         }
+
+
     }
 }

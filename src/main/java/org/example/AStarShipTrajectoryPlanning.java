@@ -76,8 +76,7 @@ public class AStarShipTrajectoryPlanning {
             MyCoordinate that = (MyCoordinate) other;
             // 自定义的坐标比较逻辑
             double tolerance = diff-1;  // 允许的误差范围
-            return Math.abs(this.getX() - that.getX()) <= tolerance &&
-                    Math.abs(this.getY() - that.getY()) <= tolerance;
+            return this.distance(that)<tolerance;
         }
     }
     class PriorityPoint {
@@ -109,7 +108,7 @@ public class AStarShipTrajectoryPlanning {
             this.point = point;
         }
     }
-    public class Circle extends Polygon {
+    public static class Circle extends Polygon {
         private final double radius;
         private final Coordinate center;
 
@@ -138,7 +137,7 @@ public class AStarShipTrajectoryPlanning {
         }
 
         private static Coordinate[] createCircleCoordinates(Coordinate center, double radius) {
-            int sides = 16; // 圆形的边数
+            int sides = 20; // 圆形的边数
             double angleIncrement = (2 * Math.PI) / sides;
             Coordinate[] coordinates = new Coordinate[sides + 1];
 
@@ -167,8 +166,7 @@ public class AStarShipTrajectoryPlanning {
 
             for (MyCoordinate coordinate : this) {
                 double tolerance = diff-1;  // 允许的误差范围
-                return Math.abs(coordinate.getX() - target.getX()) <= tolerance &&
-                        Math.abs(coordinate.getY() - target.getY()) <= tolerance;
+                return coordinate.distance(target)<tolerance;
             }
 
             return false;
@@ -237,11 +235,9 @@ public class AStarShipTrajectoryPlanning {
 
         if (me_estimate<parent_estimate){
             value-=diff*diff;
-        }else {
-            if (parent_estimate>parent_parent_estimate){
-                value+=me_estimate-parent_parent_estimate*10;
-            }
+            value*=0.8;
         }
+        //
         return value;
     }
     public static Coordinate getVCoordinate(double distance,Coordinate start,Coordinate end){
@@ -284,9 +280,6 @@ public class AStarShipTrajectoryPlanning {
 
         Coordinate[] coordinates = new Circle(coordinate, diff).getBoundary().difference(circle_l.union(circle_r)).getCoordinates();
 
-        for (Coordinate c:coordinates){
-            window.drawPoint(c.getX(),c.getY());
-        }
         List<MyCoordinate> res=new ArrayList<>();
         for (Coordinate c:coordinates){
             double x = v.getX() * (c.getX() - coordinate.getX()) + v.getY() * (c.getY() - coordinate.getY());
