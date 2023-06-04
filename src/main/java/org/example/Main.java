@@ -26,6 +26,7 @@ public class Main {
         ship.setEnginePower(engine_power);
         ship.setMass(mass);
         ship.setPowerYaw(power_of_yaw);
+        ship.setDragCoefficient(0.8);
         Coordinate start_point=new Coordinate(0, 0);
         Coordinate start_velocity=new Coordinate(0,15);
         Coordinate end_point=new Coordinate(0,0);
