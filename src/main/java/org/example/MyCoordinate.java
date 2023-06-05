@@ -3,7 +3,7 @@ package org.example;
 import org.locationtech.jts.geom.Coordinate;
 
 class MyCoordinate extends Coordinate {
-    private final AStarShipTrajectoryPlanning aStarShipTrajectoryPlanning;
+    private final ShipRoutePlan aStarShipTrajectoryPlanning;
 
     public Coordinate getV() {
         return v;
@@ -26,7 +26,7 @@ class MyCoordinate extends Coordinate {
     }
 
     public MyCoordinate(
-            AStarShipTrajectoryPlanning aStarShipTrajectoryPlanning, double x,
+            ShipRoutePlan aStarShipTrajectoryPlanning, double x,
             double y) {
         super(x, y);
         this.aStarShipTrajectoryPlanning = aStarShipTrajectoryPlanning;
@@ -48,7 +48,7 @@ class MyCoordinate extends Coordinate {
 
         MyCoordinate that = (MyCoordinate) other;
         // 自定义的坐标比较逻辑
-        double tolerance = aStarShipTrajectoryPlanning.diff - 1;  // 允许的误差范围
+        double tolerance = 1;  // 允许的误差范围
         return this.distance(that) < tolerance;
     }
 }

@@ -37,7 +37,7 @@ public class Circle extends Polygon {
 
     private static Coordinate[] createCircleCoordinates(Coordinate center,
                                                         double radius) {
-        int sides = 20; // 圆形的边数
+        int sides = 32; // 圆形的边数
         double angleIncrement = (2 * Math.PI) / sides;
         Coordinate[] coordinates = new Coordinate[sides + 1];
 
