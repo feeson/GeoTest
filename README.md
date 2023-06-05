@@ -33,6 +33,6 @@
   Main.class
     
 ## 实验结果： 
+![GQP@7LP8HHLUR8{M`R6SSUC](https://github.com/feeson/GeoTest/assets/33180551/cf3287fc-25a0-4a6a-b8a6-659b6690d5d1)
 
-![GQP@7LP8HHLUR8{M`R6SSUC](https://github.com/feeson/GeoTest/assets/33180551/9bbfa02f-6f43-4590-bcb8-0bbb82e4f139)
 ![LD`0I`}@JW 3JHC7BQT3U(9](https://github.com/feeson/GeoTest/assets/33180551/d77115ef-f495-4ee1-9478-08e3f552ddeb)
